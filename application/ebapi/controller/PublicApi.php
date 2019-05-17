@@ -86,6 +86,7 @@ class PublicApi extends AuthController
     public function index(){
         $banner = GroupDataService::getData('routine_home_banner')?:[];//TODO 首页banner图
         $menus = GroupDataService::getData('routine_home_menus')?:[];//TODO 首页按钮
+        // dump($menus);die;
         $roll = GroupDataService::getData('routine_home_roll_news')?:[];//TODO 首页滚动新闻
         $activity = GroupDataService::getData('routine_home_activity',3)?:[];//TODO 首页活动区域图片
         $info['fastInfo'] = SystemConfigService::get('fast_info');//TODO 快速选择简介
@@ -95,6 +96,7 @@ class PublicApi extends AuthController
         $logoUrl = SystemConfigService::get('routine_index_logo');//TODO 促销单品简介
         if(strstr($logoUrl,'http')===false) $logoUrl=SystemConfigService::get('site_url').$logoUrl;
         $logoUrl=str_replace('\\','/',$logoUrl);
+        // echo $logoUrl;die;
         $fastNumber = (int)SystemConfigService::get('fast_number');//TODO 快速选择分类个数
         $bastNumber = (int)SystemConfigService::get('bast_number');//TODO 精品推荐个数
         $firstNumber = (int)SystemConfigService::get('first_number');//TODO 首发新品个数

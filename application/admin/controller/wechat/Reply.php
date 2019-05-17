@@ -22,7 +22,7 @@ class Reply extends AuthController
     public function index()
     {
         if(empty(input('key'))) return $this->failed('请输入参数key');
-        if(empty(input('title'))) return $this->failed('请输入参数title');
+        // if(empty(input('title'))) return $this->failed('请输入参数title');
         $key = input('key');
         switch($key){
             case 'subscribe':
@@ -35,8 +35,9 @@ class Reply extends AuthController
                 $title = '编辑关键字回复';
                 break;
         }
-
+       
         $replay = WechatReply::getDataByKey($key);
+         // dump($replay);
         $this->assign('replay_arr',json_encode($replay));
         $this->assign('key',$key);
         $this->assign('title',$title);
