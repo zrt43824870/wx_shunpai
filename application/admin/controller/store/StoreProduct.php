@@ -157,6 +157,7 @@ class StoreProduct extends AuthController
             Form::number('cost','产品成本价')->min(0)->col(8),
             Form::number('sort','排序')->col(8),
             Form::radio('is_show','产品状态',0)->options([['label'=>'上架','value'=>1],['label'=>'下架','value'=>0]])->col(8),
+            Form::radio('is_paimai','是否拍卖品',0)->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
             Form::radio('is_hot','热卖单品',0)->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
             Form::radio('is_benefit','促销单品',0)->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
             Form::radio('is_best','精品推荐',0)->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
@@ -291,7 +292,8 @@ class StoreProduct extends AuthController
             Form::radio('is_benefit','促销单品',$product->getData('is_benefit'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
             Form::radio('is_best','精品推荐',$product->getData('is_best'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
             Form::radio('is_new','首发新品',$product->getData('is_new'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
-            Form::radio('is_postage','是否包邮',$product->getData('is_postage'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8)
+            Form::radio('is_postage','是否包邮',$product->getData('is_postage'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8),
+            Form::radio('is_postage','是否拍卖品',$product->getData('is_paimai'))->options([['label'=>'是','value'=>1],['label'=>'否','value'=>0]])->col(8)
         ];
         $form = Form::make_post_form('编辑产品',$field,Url::build('update',array('id'=>$id)),2);
         $this->assign(compact('form'));

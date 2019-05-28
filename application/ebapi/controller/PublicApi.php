@@ -66,17 +66,18 @@ class PublicApi extends AuthController
         $info['list'] = [];
         if($type == 1){//TODO 精品推荐
             $info['banner'] = GroupDataService::getData('routine_home_bast_banner')?:[];//TODO 首页精品推荐图片
-            $info['list'] = StoreProduct::getBestProduct('id,image,store_name,cate_id,price,ot_price,IFNULL(sales,0) + IFNULL(ficti,0) as sales,unit_name,sort');//TODO 精品推荐个数
+            $info['list'] = StoreProduct::getBestProduct('id,pm_time,image,store_name,cate_id,price,ot_price,IFNULL(sales,0) + IFNULL(ficti,0) as sales,unit_name,sort');//TODO 精品推荐个数
         }else if($type == 2){//TODO 热门榜单
             $info['banner'] = GroupDataService::getData('routine_home_hot_banner')?:[];//TODO 热门榜单 猜你喜欢推荐图片
-            $info['list'] = StoreProduct::getHotProduct('id,image,store_name,cate_id,price,ot_price,unit_name,sort,IFNULL(sales,0) + IFNULL(ficti,0) as sales',0,$this->uid);//TODO 热门榜单 猜你喜欢
+            $info['list'] = StoreProduct::getHotProduct('id,pm_time,image,store_name,cate_id,price,ot_price,unit_name,sort,IFNULL(sales,0) + IFNULL(ficti,0) as sales',0,$this->uid);//TODO 热门榜单 猜你喜欢
         }else if($type == 3){//TODO 首发新品
             $info['banner'] = GroupDataService::getData('routine_home_new_banner')?:[];//TODO 首发新品推荐图片
-            $info['list'] = StoreProduct::getNewProduct('id,image,store_name,cate_id,price,ot_price,unit_name,sort,IFNULL(sales,0) + IFNULL(ficti,0) as sales',0,$this->uid);//TODO 首发新品
+            $info['list'] = StoreProduct::getNewProduct('id,pm_time,image,store_name,cate_id,price,ot_price,unit_name,sort,IFNULL(sales,0) + IFNULL(ficti,0) as sales',0,$this->uid);//TODO 首发新品
         }else if($type == 4){//TODO 促销单品
             $info['banner'] = GroupDataService::getData('routine_home_benefit_banner')?:[];//TODO 促销单品推荐图片
-            $info['list'] = StoreProduct::getBenefitProduct('id,image,store_name,cate_id,price,ot_price,stock,unit_name,sort');//TODO 促销单品
+            $info['list'] = StoreProduct::getBenefitProduct('id,pm_time,image,store_name,cate_id,price,ot_price,stock,unit_name,sort');//TODO 促销单品
         }
+        $info['list'] = $this->swTime($info['list']);
         return JsonService::successful($info);
     }
 
@@ -101,7 +102,8 @@ class PublicApi extends AuthController
         $bastNumber = (int)SystemConfigService::get('bast_number');//TODO 精品推荐个数
         $firstNumber = (int)SystemConfigService::get('first_number');//TODO 首发新品个数
         $info['fastList'] = StoreCategory::byIndexList($fastNumber);//TODO 快速选择分类个数
-        $info['bastList'] = StoreProduct::getBestProduct('id,image,store_name,cate_id,price,ot_price,IFNULL(sales,0) + IFNULL(ficti,0) as sales,unit_name,sort',$bastNumber,$this->uid);//TODO 精品推荐个数
+        $info['bastList'] = StoreProduct::getBestProduct('id,pm_time,image,store_name,cate_id,price,ot_price,IFNULL(sales,0) + IFNULL(ficti,0) as sales,unit_name,sort',$bastNumber,$this->uid);//TODO 精品推荐个数
+        $info['bastList'] = $this->swTime($info['bastList']);
         $info['firstList'] = StoreProduct::getNewProduct('id,image,store_name,cate_id,price,unit_name,sort',$firstNumber);//TODO 首发新品个数
         $info['bastBanner'] = GroupDataService::getData('routine_home_bast_banner')?:[];//TODO 首页精品推荐图片
         $benefit = StoreProduct::getBenefitProduct('id,image,store_name,cate_id,price,ot_price,stock,unit_name,sort',3);//TODO 首页促销单品
@@ -110,6 +112,8 @@ class PublicApi extends AuthController
         $couponList=StoreCouponIssue::getIssueCouponList($this->uid,3);
         return $this->successful(compact('banner','menus','roll','info','activity','lovely','benefit','likeInfo','logoUrl','couponList'));
     }
+
+
 
     /**
      * 猜你喜欢  加载

@@ -119,7 +119,7 @@ class StoreApi extends AuthController
             ['page',0],
             ['limit',0]
         ],$this->request);
-        return JsonService::successful(StoreProduct::getProductList($data,$this->uid));
+        return JsonService::successful($this->swTime(StoreProduct::getProductList($data,$this->uid)));
     }
 
     /**
@@ -144,6 +144,7 @@ class StoreApi extends AuthController
             $data['replyChance']=bcmul($data['replyChance'],100,3);
         }else $data['replyChance']=0;
         $data['mer_id'] = StoreProduct::where('id',$storeInfo['id'])->value('mer_id');
+        $data['storeInfo']['pm_time'] = date('Y-m-d H:i:s',$data['storeInfo']['pm_time']);
         return JsonService::successful($data);
     }
 

@@ -23,7 +23,7 @@ class StoreProduct extends ModelBasic
         return json_decode($value,true)?:[];
     }
 
-    public static function getValidProduct($productId,$field = 'add_time,browse,cate_id,code_path,cost,description,ficti,give_integral,id,image,is_bargain,is_benefit,is_best,is_del,is_hot,is_new,is_postage,is_seckill,is_show,keyword,mer_id,mer_use,ot_price,postage,price,sales,slider_image,sort,stock,store_info,store_name,unit_name,vip_price,IFNULL(sales,0) + IFNULL(ficti,0) as fsales')
+    public static function getValidProduct($productId,$field = 'add_time,browse,cate_id,code_path,cost,description,ficti,give_integral,id,image,is_bargain,is_benefit,is_best,is_del,is_hot,is_new,is_postage,is_seckill,is_show,keyword,mer_id,mer_use,ot_price,postage,price,sales,slider_image,sort,stock,store_info,store_name,unit_name,vip_price,IFNULL(sales,0) + IFNULL(ficti,0) as fsales , pm_time,yy_time,is_paimai')
     {
          $Product=self::where('is_del',0)->where('is_show',1)->where('id',$productId)->field($field)->find();
          if($Product) return $Product->toArray();
@@ -70,7 +70,7 @@ class StoreProduct extends ModelBasic
         if($salesOrder) $baseOrder = $salesOrder == 'desc' ? 'sales DESC' : 'sales ASC';//虚拟销量
         if($baseOrder) $baseOrder .= ', ';
         $model=$model->order($baseOrder.'sort DESC, add_time DESC');
-        $list=$model->page((int)$page,(int)$limit)->field('id,store_name,cate_id,image,IFNULL(sales,0) + IFNULL(ficti,0) as sales,price,stock')->select();
+        $list=$model->page((int)$page,(int)$limit)->field('id,is_paimai,pm_time,store_name,cate_id,image,IFNULL(sales,0) + IFNULL(ficti,0) as sales,price,stock')->select();
         $list=count($list) ? $list->toArray() : [];
         return self::setLevelPrice($list,$uid);
     }
