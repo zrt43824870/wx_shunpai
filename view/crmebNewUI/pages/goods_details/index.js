@@ -171,6 +171,7 @@ Page({
     var that=this;
     app.baseGet(app.U({ c: 'store_api', a:'details',q:{id:that.data.id}}),function(res){
       var storeInfo = res.data.storeInfo;
+      console.log(storeInfo);
       that.setData({
         storeInfo: storeInfo,
         reply: res.data.reply ? [res.data.reply] : [],
@@ -537,5 +538,13 @@ Page({
       imageUrl: that.data.productSelect.image,
       path: '/pages/goods_details/index?id=' + that.data.id + (that.data.sharePacket.isState ? '':'&spid='+that.data.uid),
     }
+  },
+  /**
+   * 贷款咨询拨打电话
+   */
+  chatTel:function(){
+    wx.makePhoneCall({
+      phoneNumber: '4001655165'
+    })
   }
 })

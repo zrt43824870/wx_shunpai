@@ -49,7 +49,7 @@
               </swiper> 
        </view>
     </view>
-    <view class='specialArea acea-row row-between-wrapper'>
+    <!-- <view class='specialArea acea-row row-between-wrapper'>
       <block wx:for="{{activityList}}" wx:key>
        <navigator class='assemble' url='{{item.link}}' wx:if="{{index < 1}}">
           <image src='{{item.pic}}'></image>
@@ -70,7 +70,7 @@
             </navigator>
           </block>  
        </view>
-    </view>
+    </view> -->
     <view class='wrapper'>
        <view class='title acea-row row-between-wrapper'>
           <view class='text'>
@@ -100,7 +100,7 @@
           </view>
           <navigator class='more' hover-class="none" url='/pages/first-new-product/index?type=1'>更多<text class='iconfont icon-jiantou'></text></navigator>
        </view>
-       <view class='boutique'>
+       <!-- <view class='boutique'>
             <swiper  autoplay="true"  indicator-dots="true"
                  circular="{{circular}}" interval="{{interval}}" duration="{{duration}}" indicator-color="rgba(252,65,65,0.3)" indicator-active-color="#fc4141">
                 <block wx:for="{{bastBanner}}" wx:key>
@@ -111,13 +111,13 @@
                   </swiper-item>
                 </block>
             </swiper>
-       </view>
+       </view> -->
        <goodList bastList="{{bastList}}"></goodList>
     </view>
     <view class='hotList'>
        <view class='hot-bg'>
           <view class='title acea-row row-between-wrapper'>
-            <view class='text line1'><text class='label'>热门榜单</text>根据销量、搜索、好评等综合得出</view>
+            <view class='text line1'><text class='label'>热门服务</text>顺拍产品服务列表</view>
             <navigator class='more' hover-class="none" url='/pages/first-new-product/index?type=2'>更多<text class="iconfont icon-jiantou"></text></navigator>
           </view>
        </view>

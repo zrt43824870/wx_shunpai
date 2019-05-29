@@ -39,6 +39,9 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked{
 border: 1px solid #e93323 !important;background-color: #e93323 !important;color:#fff!important;}
 checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {font-size:35rpx;}
 .line1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.line-jp{overflow:hidden;text-overflow:ellipsis;color:#000;font-size: 30rpx; }
+.line-yuyue{background-color: #0bce0b;font-size: 20rpx;color: #ffffff;padding: 2rpx;}
+/* .line1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;} */
 .line2{word-break:break-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .mask{position:fixed;top:0;left:0;right:0;bottom:0;background-color:#000;opacity:0.5;z-index:5;}
 button{padding:0;margin:0;line-height:normal;background-color:#fff;}

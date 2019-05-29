@@ -2,19 +2,54 @@
 <view class='product-con'>
       <productConSwiper imgUrls="{{storeInfo.slider_image}}"></productConSwiper>
       <view class='wrapper'>
-         <view class='share acea-row row-between row-bottom'>
-           <view class='money font-color'>
-             ￥<text class='num'>{{storeInfo.price}}</text><text class='vip-money' wx:if="{{storeInfo.vip_price && storeInfo.vip_price > 0}}">￥{{storeInfo.vip_price}}</text><image wx:if="{{storeInfo.vip_price && storeInfo.vip_price > 0}}" src="/images/vip.png"></image>
-           </view>
-           <view class='iconfont icon-fenxiang'  bindtap='listenerActionSheet'></view>
+         <view class='introduce'>{{storeInfo.store_name}}          
          </view>
-         <view class='introduce'>{{storeInfo.store_name}}</view>
-         <view class='label acea-row row-between-wrapper'>
+
+          <view class='share acea-row row-between row-bottom'>
+            <view class='money' >
+              <text wx:if="{{storeInfo.is_paimai==1}}">起拍价：</text> <text wx:else>价格：</text> 
+              <text  class='num font-color'  wx:if="{{storeInfo.price>10000}}" >￥：{{storeInfo.price/10000}}万元</text>
+              <text   class='num font-color' wx:else>￥：{{storeInfo.price}}</text>
+              <!-- <text class='vip-money' wx:if="{{storeInfo.vip_price && storeInfo.vip_price > 0}}">￥{{storeInfo.vip_price}}</text>
+              <image wx:if="{{storeInfo.vip_price && storeInfo.vip_price > 0}}" src="/images/vip.png"></image> -->
+            </view>
+            <view class='iconfont icon-fenxiang'  bindtap='listenerActionSheet'></view>
+          </view>
+
+           <view class='share acea-row row-between row-bottom' wx:if="{{storeInfo.is_paimai==1}}">
+            <view class='money '>
+              评估价：<text  class='num font-color'  wx:if="{{storeInfo.price>10000}}" >￥：{{storeInfo.price/10000}}万元</text>
+              <text   class='num font-color' wx:else>￥：{{storeInfo.price}}</text>
+            </view>
+          </view>
+
+       
+          <view class='share acea-row row-between row-bottom' wx:if="{{storeInfo.is_paimai==1}}">
+            <view class='money '>
+              拍卖时间：<text class='money '>{{storeInfo.pm_time}}</text>
+            </view>
+          </view>
+
+
+         <view class='label acea-row row-between-wrapper'wx:if="{{storeInfo.is_paimai==1}}">
+           <view>保证金：￥18万元</view>
+           <view>加价幅度：￥5000元</view>
+           <!-- <view>销量:{{storeInfo.fsales}}{{storeInfo.unit_name}}</view> -->
+         </view>
+
+           <view class='label acea-row row-between-wrapper' wx:if="{{storeInfo.is_paimai==1}}">
+           <view>竞价周期：1天</view>
+           <view>处置法院：成都市青羊区人民法院</view>
+           <!-- <view>销量:{{storeInfo.fsales}}{{storeInfo.unit_name}}</view> -->
+         </view>
+
+         <view class='label acea-row row-between-wrapper' wx:if="{{storeInfo.is_paimai==0}}">
            <view>原价:￥{{storeInfo.ot_price}}</view>
            <view>库存:{{storeInfo.stock}}{{storeInfo.unit_name}}</view>
            <view>销量:{{storeInfo.fsales}}{{storeInfo.unit_name}}</view>
          </view>
-         <view class='coupon acea-row row-between-wrapper' bindtap='coupon'>
+
+         <view class='coupon acea-row row-between-wrapper' bindtap='coupon' wx:if="{{storeInfo.is_paimai==0}}">
            <view class='hide line1 acea-row'>
              优惠券：
              <view class='activity' wx:for="{{couponList}}" wx:key>满{{item.use_min_price}}减{{item.coupon_price}}</view>
@@ -22,7 +57,7 @@
            <view class='iconfont icon-jiantou'></view>
          </view>
       </view>
-      <view class='attribute acea-row row-between-wrapper' bindtap='selecAttr'>
+      <view class='attribute acea-row row-between-wrapper' bindtap='selecAttr' wx:if="{{storeInfo.is_paimai==0}}">
          <view>{{attr}}：<text class='atterTxt'>{{attrValue}}</text></view>
          <view class='iconfont icon-jiantou'></view>
       </view>
@@ -52,16 +87,21 @@
           <view class='iconfont icon-shoucang' wx:else></view>
           <view>收藏</view>
         </view>
-        <navigator open-type='switchTab' class="animated item {{animated==true?'bounceIn':''}}" url='/pages/order_addcart/order_addcart'>
+        <navigator open-type='switchTab' class="animated item {{animated==true?'bounceIn':''}}" url='/pages/order_addcart/order_addcart' wx:if="{{storeInfo.is_paimai==0}}">
           <view class='iconfont icon-gouwuche1'><text class='num bg-color'>{{CartCount || 0}}</text></view>
           <view>购物车</view>
         </navigator>
-        <view class='bnt acea-row'>
+        <view class='bnt acea-row'wx:if="{{storeInfo.is_paimai==0}}">
            <view class='joinCart' bindtap='joinCart'>加入购物车</view>
            <view class='buy' bindtap='goBuy'>立即购买</view>
         </view>
+        <view class='bnt acea-row'wx:else>
+           <view class='joinCart' bindtap='chatTel'>贷款咨询</view>
+           <view class='buy' bindtap='goBuy'>预约看样</view>
+           <!-- <view class='no_buy' bindtap=''>看样排期,不可预约</view> -->
+        </view>
       </view>  
-      <shareRedPackets sharePacket="{{sharePacket}}" bind:listenerActionSheet="listenerActionSheet"></shareRedPackets>
+      <!-- <shareRedPackets sharePacket="{{sharePacket}}" bind:listenerActionSheet="listenerActionSheet"></shareRedPackets> -->
 </view>
 <!-- 分享按钮 -->
 <action-sheet hidden="{{actionSheetHidden}}" bindchange="listenerActionSheet" class='pro-wrapper' hover-class='none'>

@@ -77,6 +77,8 @@ Page({
     var that = this;
     var url = app.U({ c: 'public_api', a: 'index' }, app.globalData.url);
     app.baseGet(url,function(res){
+      console.log(app.U({c:'public_api',a:'index'}))
+      console.log(res.data.info.bastList);
       that.setData({ 
         imgUrls: res.data.banner, 
         menus: res.data.menus, 

@@ -1,7 +1,7 @@
 .product-con .wrapper{background-color:#fff;}
 .product-con .wrapper .share{margin:0 30rpx;padding-top:25rpx;}
-.product-con .wrapper .share .money{font-size:28rpx;font-weight:bold;}
-.product-con .wrapper .share .money .num{font-size:48rpx;}
+.product-con .wrapper .share .money{font-size:28rpx;}
+.product-con .wrapper .share .money .num{font-size:48rpx;font-weight: bold}
 .product-con .wrapper .share .money .vip-money{color:#282828;margin-left:13rpx;}
 .product-con .wrapper .share .money image{width:46rpx;height:21rpx;margin-left:7rpx;}
 .product-con .wrapper .share .money .vip-money{color:#282828;margin-left:13rpx;}

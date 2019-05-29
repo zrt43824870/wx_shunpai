@@ -9,12 +9,12 @@ Page({
     parameter: {
       'navbar': '1',
       'return': '1',
-      'title': '商品列表',
+      'title': '标的物列表',
       'color': true,
       'class': '0'
     },
     navH: "",
-    is_switch:true,
+    is_switch:false,
     where: {
       sid: 0,
       keyword: '',
@@ -128,6 +128,7 @@ Page({
     app.baseGet(app.U({ c:'store_api',a: 'get_product_list', q: that.data.where }), function (res) {
       var list = res.data;
       var productList = app.SplitArray(list, that.data.productList);
+      console.log(productList);
       var loadend = list.length < that.data.where.limit;
       that.setData({
         loadend: loadend,

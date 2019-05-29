@@ -48,6 +48,8 @@ Page({
     var that=this;
     wx.showLoading({ title: "正在加载中" });
     app.baseGet(app.U({ c: 'user_api', a:'get_order',q:{uni:this.data.order_id}}),function(res){
+      // console.log(app.U({c: 'user_api' , a:'get_order'}));
+      // console.log(res);
       var _type=res.data._status._type;
       wx.hideLoading();
       that.setData({ orderInfo: res.data, cartInfo: res.data.cartInfo, evaluate: _type==3 ? 3: 0});

@@ -9,9 +9,13 @@
               </view>
               <view class='underline'>
                   <view class='text'>
-                      <view class='line1'>{{item.store_name}}</view>
-                      <view class='money font-color'>￥<text class='num'>{{item.price}}</text></view>
-                      <view class='vip-money acea-row row-middle'>￥{{item.vip_price || 0}}<image wx:if='{{item.vip_price && item.vip_price > 0}}' src='/images/vip.png'></image><text class='num'>已售{{item.sales}}{{item.unit_name}}</text></view>
+                      <view class='line-jp'><text class='line-yuyue'>可预约</text>{{item.store_name}}</view>
+                      <view class='money '>
+                      起 拍 价 ：<text class='num font-color' wx:if="{{item.price>10000}}">￥{{item.price/10000}}万元</text>
+                      <text class='num font-color' wx:else>￥{{item.price}}</text>
+                      </view>
+                      <view class='money '>拍卖时间：<text class='date '>{{item.pm_time}}</text></view>
+                      <!-- <view class='vip-money acea-row row-middle'>￥{{item.vip_price || 0}}<image wx:if='{{item.vip_price && item.vip_price > 0}}' src='/images/vip.png'></image><text class='num'>已售{{item.sales}}{{item.unit_name}}</text></view> -->
                     
                   </view>
               </view>
