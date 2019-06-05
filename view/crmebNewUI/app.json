@@ -8,6 +8,7 @@
     "pages/user/user",
     "pages/user_get_coupon/index",
     "pages/order_confirm/index",
+    "pages/book_confirm/index",
     "pages/goods_list/goods_list",
     "pages/user_coupon/index",
     "pages/goods_comment_list/index",

@@ -17,8 +17,11 @@
     </view>
     <view class='iconfont icon-jiantou'></view>
   </view>
+
   <orderGoods cartInfo="{{cartInfo}}"></orderGoods>
   <view class='wrapper'>
+
+
     <view class='item acea-row row-between-wrapper' bindtap='coupon' wx:if="{{!pinkId && !BargainId && !combinationId && !seckillId}}">
       <view>优惠券</view>
       <view class='discount'>{{couponTitle}}

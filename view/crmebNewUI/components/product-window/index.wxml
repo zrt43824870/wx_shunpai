@@ -3,9 +3,9 @@
       <view class='pictrue'><image src='{{productSelect.image}}'></image></view>
       <view class='text'>
          <view class='line1'>{{productSelect.store_name}}</view>
-         <view class='money font-color'>
+         <view class='money font-color' wx:if="{{storeInfo.is_paimai==0}}">
           ￥<text class='num'>{{productSelect.price}}</text>
-          <text class='stock'>库存: {{productSelect.stock}}</text>
+          <text class='stock' >库存: {{productSelect.stock}}</text>
          </view>
       </view>
       <view class='iconfont icon-guanbi' bindtap='close'></view>
@@ -18,12 +18,18 @@
          </view>
       </view>
    </view>
-   <view class='cart'>
-       <view class='title'>数量</view>
+   <view class='cart'wx:if="{{productSelect.is_paimai==0}}" >
+       <view class='title'>数量 </view>
        <view class='carnum acea-row row-left'>
           <view class='reduce {{productSelect.cart_num <= 1 ? "on":""}}' bindtap='CartNumDes'>-</view>
           <view class='num'>{{productSelect.cart_num}}</view>
           <view class='plus {{productSelect.cart_num >= productSelect.stock || productSelect.is_on ? "on":""}}' bindtap='CartNumInt'>+</view>
+       </view>
+   </view>
+    <view class='cart' wx:else>
+       <view class='title'>看样时间 </view>
+       <view class='carnum acea-row row-left'>
+         <view class='time'>{{productSelect.yy_time}}</view>
        </view>
    </view>
 </view>

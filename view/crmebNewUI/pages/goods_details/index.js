@@ -171,7 +171,7 @@ Page({
     var that=this;
     app.baseGet(app.U({ c: 'store_api', a:'details',q:{id:that.data.id}}),function(res){
       var storeInfo = res.data.storeInfo;
-      console.log(storeInfo);
+      // console.log(storeInfo);
       that.setData({
         storeInfo: storeInfo,
         reply: res.data.reply ? [res.data.reply] : [],
@@ -207,6 +207,8 @@ Page({
     if (productSelect){
       this.setData({
         ["productSelect.store_name"]: storeInfo.store_name,
+        ["productSelect.is_paimai"]: storeInfo.is_paimai,
+        ["productSelect.yy_time"]: storeInfo.yy_time,
         ["productSelect.image"]: productSelect.image,
         ["productSelect.price"]: productSelect.price,
         ["productSelect.stock"]: productSelect.stock,
@@ -218,6 +220,8 @@ Page({
     }else{
       this.setData({
         ["productSelect.store_name"]:storeInfo.store_name,
+        ["productSelect.is_paimai"]: storeInfo.is_paimai,
+        ["productSelect.yy_time"]: storeInfo.yy_time,
         ["productSelect.image"]: storeInfo.image,
         ["productSelect.price"]: storeInfo.price,
         ["productSelect.stock"]: storeInfo.stock,
@@ -390,6 +394,57 @@ Page({
     else
       this.goCat(true);
   },
+  /**
+   * 预约看样
+   */
+  goBook:function(){
+    // wx.navigateTo({ url: '/pages/order_confirm/index?cartId='});
+    var that = this;
+    if (app.globalData.isLog === false)
+      this.setData({ isAuto: true, iShidden: false });
+    else
+      this.goYuyue(true);
+  },
+  /**
+   * 预约时间
+   */
+  goYuyue: function (isPay){
+    var that = this;
+    var productSelect = this.data.productValue[this.data.attrValue];
+    //打开属性
+    if (this.data.attrValue) {
+      //默认选中了属性，但是没有打开过属性弹窗还是自动打开让用户查看默认选中的属性
+      this.setData({ 'attribute.cartAttr': !this.data.isOpen ? true : false })
+    } else {
+      if (this.data.isOpen)
+        this.setData({ 'attribute.cartAttr': true })
+      else
+        this.setData({ 'attribute.cartAttr': !this.data.attribute.cartAttr });
+    }
+    //只有关闭属性弹窗时进行加入购物车
+    if (this.data.attribute.cartAttr === true && this.data.isOpen == false) return this.setData({ isOpen: true });
+    //如果有属性,没有选择,提示用户选择
+    if (this.data.productAttr.length && productSelect === undefined && this.data.isOpen == true) return app.Tips({ title: '请选择属性' });
+    app.baseGet(app.U({
+      c: 'auth_api',
+      a: isPay == undefined ? 'set_cart' : 'now_buy',
+      q: {
+        productId: that.data.id,
+        cartNum: that.data.cart_num,
+        uniqueId: productSelect !== undefined ? productSelect.unique : ''
+      }
+    }), function (res) {
+      that.setData({ isOpen: false, 'attribute.cartAttr': false });
+      if (isPay)
+        wx.navigateTo({ url: '/pages/book_confirm/index?cartId=' + res.data.cartId });
+      else
+        app.Tips({ title: '添加购物车成功', icon: 'success' }, function () {
+          that.getCartCount(true);
+        });
+    })
+  },
+
+
   /**
    * 分享打开和关闭
    * 

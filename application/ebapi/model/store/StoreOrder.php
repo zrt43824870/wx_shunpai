@@ -147,6 +147,99 @@ class StoreOrder extends ModelBasic
         Cache::clear('user_order_'.$uid.$key);
     }
 
+    /**生成预约订单
+     * @param $uid
+     * @param $key
+     * @param $addressId
+     * @param $payType
+     * @param bool $useIntegral
+     * @param int $couponId
+     * @param string $mark
+     * @param int $combinationId
+     * @param int $pinkId
+     * @param int $seckill_id
+     * @param int $bargain_id
+     * @return bool|object
+     */
+    public static function cacheKeyCreateBook($uid,$key,$addressId,$payType,$useIntegral = false,$couponId = 0,$mark = '',$combinationId = 0,$pinkId = 0,$seckill_id=0,$bargain_id=0,$daikuan=1, $banzheng=0, $zhidao=0)
+    {
+//        if(!array_key_exists($payType,self::$payType)) return self::setErrorInfo('选择支付方式有误!');
+        if(self::be(['unique'=>$key,'uid'=>$uid])) return self::setErrorInfo('请勿重复提交预约订单');
+        $userInfo = User::getUserInfo($uid);
+        if(!$userInfo) return  self::setErrorInfo('用户不存在!');
+        $cartGroup = self::getCacheOrderInfo($uid,$key);
+        if(!$cartGroup) return self::setErrorInfo('订单已过期,请刷新当前页面!');
+        $cartInfo = $cartGroup['cartInfo'];
+        $priceGroup = $cartGroup['priceGroup'];
+        $other = $cartGroup['other'];
+        $payPrice = 0;
+        $payPostage = 0;
+        $couponPrice =0;
+        $deductionPrice=0;
+        $usedIntegral =0;
+        if(!$addressId) return self::setErrorInfo('请选择收货地址!');
+        if(!UserAddress::be(['uid'=>$uid,'id'=>$addressId,'is_del'=>0]) || !($addressInfo = UserAddress::find($addressId)))
+            return self::setErrorInfo('地址选择有误!');
+
+
+        $cartIds = [];
+        $totalNum = 0;
+        $gainIntegral = 0;
+        foreach ($cartInfo as $cart){
+            $cartIds[] = $cart['id'];
+            $totalNum += $cart['cart_num'];
+            $gainIntegral = bcadd($gainIntegral,isset($cart['productInfo']['give_integral']) ? $cart['productInfo']['give_integral'] : 0,2);
+        }
+        $orderInfo = [
+            'uid'=>$uid,
+            'order_id'=>self::getNewOrderId(),
+            'real_name'=>$addressInfo['real_name'],
+            'user_phone'=>$addressInfo['phone'],
+            'user_address'=>$addressInfo['province'].' '.$addressInfo['city'].' '.$addressInfo['district'].' '.$addressInfo['detail'],
+            'cart_id'=>$cartIds,
+            'total_num'=>$totalNum,
+            'total_price'=>0,
+            'total_postage'=>$priceGroup['storePostage'],
+            'coupon_id'=>$couponId,
+            'coupon_price'=>$couponPrice,
+            'pay_price'=>$payPrice,
+            'pay_postage'=>$payPostage,
+            'deduction_price'=>$deductionPrice,
+            'paid'=>0,
+            'pay_type'=>$payType,
+            'use_integral'=>$usedIntegral,
+            'gain_integral'=>$gainIntegral,
+            'mark'=>htmlspecialchars($mark),
+            'combination_id'=>$combinationId,
+            'pink_id'=>$pinkId,
+            'seckill_id'=>$seckill_id,
+            'bargain_id'=>$bargain_id,
+            'cost'=>$priceGroup['costPrice'],
+            'is_channel'=>1,
+            'unique'=>$key,
+            'is_daikuan'=>$daikuan,
+            'is_banzheng'=>$banzheng,
+            'is_zhidao'=>$zhidao
+        ];
+        $order = self::set($orderInfo);
+        if(!$order)return self::setErrorInfo('预约失败!');
+        $res5 = true;
+        //保存购物车商品信息
+        $res4 = false !== StoreOrderCartInfo::setCartInfo($order['id'],$cartInfo);
+        //购物车状态修改
+        $res6 = false !== StoreCart::where('id','IN',$cartIds)->update(['is_pay'=>1]);
+        if(!$res4 || !$res5 || !$res6) return self::setErrorInfo('订单生成失败!');
+        try{
+            HookService::listen('store_product_order_create',$order,compact('cartInfo','addressId'),false,GoodsBehavior::class);
+        }catch (\Exception $e){
+            return self::setErrorInfo($e->getMessage());
+        }
+        self::clearCacheOrderInfo($uid,$key);
+        self::commitTrans();
+        StoreOrderStatus::status($order['id'],'cache_key_create_order','订单生成');
+        return $order;
+    }
+
     /**生成订单
      * @param $uid
      * @param $key

@@ -97,7 +97,7 @@
         </view>
         <view class='bnt acea-row'wx:else>
            <view class='joinCart' bindtap='chatTel'>贷款咨询</view>
-           <view class='buy' bindtap='goBuy'>预约看样</view>
+           <view class='buy' bindtap='goBook'>预约看样</view>
            <!-- <view class='no_buy' bindtap=''>看样排期,不可预约</view> -->
         </view>
       </view>  

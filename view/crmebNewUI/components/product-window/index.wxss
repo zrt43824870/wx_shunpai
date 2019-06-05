@@ -24,5 +24,5 @@
 .product-window .cart .carnum .plus{border-left:0;border-radius:0 6rpx 6rpx 0;line-height:46rpx;}
 .product-window .cart .carnum .plus.on{border-color:#e3e3e3;color:#dedede;}
 .product-window .cart .carnum .num{color:#282828;font-size:28rpx;}
-
+.product-window .cart .carnum .time{color:#282828;font-size:28rpx;width: 100%;}
 

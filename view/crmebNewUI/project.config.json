@@ -42,7 +42,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 23,
+			"current": 24,
 			"list": [
 				{
 					"id": 0,
@@ -209,6 +209,14 @@
 					"id": -1,
 					"name": "体现",
 					"pathName": "pages/user_cash/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "预约确认",
+					"pathName": "pages/book_confirm/index",
+					"query": "cartId=432",
 					"scene": null
 				}
 			]

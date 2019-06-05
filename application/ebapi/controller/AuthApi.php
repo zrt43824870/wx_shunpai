@@ -254,6 +254,28 @@ class AuthApi extends AuthController
     }
 
     /*
+     * 创建预约订单
+     */
+    public function create_book($key = ''){
+        if (!$key) return JsonService::fail('参数错误!');
+        if (StoreOrder::be(['order_id|unique' => $key, 'uid' => $this->userInfo['uid'], 'is_del' => 0]))
+            return JsonService::status('extend_order', '订单已生成', ['orderId' => $key, 'key' => $key]);
+        list($addressId, $couponId, $payType, $useIntegral, $mark, $combinationId, $pinkId, $seckill_id, $formId, $bargainId, $daikuan, $banzheng, $zhidao  ) = UtilService::postMore([
+            'addressId', 'couponId', 'payType', 'useIntegral', 'mark', ['combinationId', 0], ['pinkId', 0], ['seckill_id', 0], ['formId', ''], ['bargainId', ''],'daikuan' ,'banzheng', 'zhidao'
+        ], Request::instance(), true);
+        $payType = strtolower($payType);
+//        return JsonService::status('success' ,'返回测试', $payType);
+        $order = StoreOrder::cacheKeyCreateBook($this->userInfo['uid'], $key, $addressId, $payType, $useIntegral, $couponId, $mark, $combinationId, $pinkId, $seckill_id, $bargainId, $daikuan, $banzheng, $zhidao);
+        $orderId = $order['order_id'];
+        $info = compact('orderId', 'key');
+        if ($orderId) {
+            switch ($payType) {
+                case 'book':
+                    return JsonService::status('success', '预约成功', $info);
+            }
+        } else return JsonService::fail(StoreOrder::getErrorInfo('订单生成失败!'));
+    }
+    /*
      * 再来一单
      *
      * */
